@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    #panel {
+      width: 250px;
+      height: auto;
+      background: lightblue;
+      padding: 20px;
+      opacity: 1;
+      max-height: 500px;
+      overflow: hidden;
+      transition: all 0.6s ease; /* smooth transition for multiple properties */
+    }
+    #panel.hidden {
+      opacity: 0;        /* fades out */
+      max-height: 0;     /* collapses smoothly */
+      padding: 0;        /* removes padding for cleaner collapse */
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      $("#toggleBtn").click(function() {
+        $("#panel").toggleClass("hidden"); // jQuery toggles the class
+      });
+    });
+  </script>
+</head>
+<body>
+  <button id="toggleBtn">Toggle Panel</button>
+  <div id="panel">
+    <h3>Smooth Transition Panel</h3>
+    <p>This panel slides and fades at the same time, giving a modern animation effect.</p>
+  </div>
+</body>
+</html>

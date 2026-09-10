@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .error{ color: red; }
+        input.error-border { border: 1px solid red; }
+    </style>
+    </style>
+</head>
+<body>
+    <h2>Student Registration Form</h2>
+    <form id="studentForm">
+        <label for="name">Full Name:</label>
+        <input type="text" id="name"><br><br>
+        <label for="email">Email:</label>
+        <input type="text" id="email"><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password"><br><br>
+        <label for="phone">Phone:</label>
+        <input type="text" id="phone"><br><br>
+        <label for="gender">Gender:</label>
+        <input type="radio" name="gender" value="Male"> Male
+        <input type="radio" name="gender" value="Female"> Female<br><br>
+        <label for="course">Course:</label>
+        <select id="course">
+            <option value="" selected disabled>Select Course</option>
+            <option value="BCA">B.Tech</option>
+            <option value="BBA">M.Tech</option>
+        </select><br><br>
+        <button type="submit">Register</button>
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).click(function(){
+            $("#studentForm").submit(function(event){
+                event.preventDefault();
+                let errors = [];
+                $("input, select").removeClass("error-border");
+                if($("#name").val().trim() === ""){
+                    errors.push("Name is required");
+                    $("#name").addClass("error-border");
+                }
+                let emailPattern = /^[^ ]+@[^ ]+\.[a-z]{2,3}$/;
+                if(!emailPattern.test($("#email").val())){
+                    errors.push("Valid email is required");
+                    $("#email").addClass("error-border");
+                }
+                if($("#password").val().length < 6){
+                    errors.push("Password must be at least 6 characters");
+                    $("#password").addClass("error-border");
+                }
+                let phonePattern = /^[0-9]{10}$/;
+                if(!phonePattern.test($("#phone").val())){
+                    errors.push("Phone number must be 10 digits");
+                    $("#phone").addClass("error-border");
+                }
+                if($("input[name='gender']:checked").length === 0){
+                    errors.push("Gender selection is required");
+                }
+                if($("#course").val() === ""){
+                    errors.push("Course selection is required");
+                    $("#course").addClass("error-border");
+                }
+                if(errors.length > 0){
+                    $("#errorMessages").html("<div class='error'>" + errors.join("<br>") + "</div>");
+                } else {
+                    $("#errorMessages").html("<div style='color:green;'>Form submitted successfully!</div>");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

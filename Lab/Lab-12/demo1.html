@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Attendance Management System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            width: 700px;
+            height: 90vh;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+        }
+
+        .left-panel,.right-panel {
+            width: 48%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .input-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+
+        .input-group input {
+            width: 45%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .student-box {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 22px;
+            font-weight: bold;
+            border: 2px solid #333;
+            border-radius: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+            text-align: center;
+            padding: 10px;
+            white-space: pre-line;
+        }
+
+        .student-box.present {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .student-box.absent {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+
+        .btn-group button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .present-btn {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .absent-btn {
+            background: #f44336;
+            color: white;
+        }
+
+        .absent-list {
+            flex: 1;
+            width: 100%;
+            border: 2px solid #f44336;
+            border-radius: 10px;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .absent-list h3 {
+            margin-top: 0;
+            color: #f44336;
+        }
+
+        .absent-item {
+            padding: 5px;
+            margin: 5px 0;
+            background: #ffe5e5;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .green-text {
+            color: #4CAF50;
+        }
+
+        .red-text {
+            color: #f44336;
+        }
+
+        #completionInstruction {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Left Panel -->
+        <div class="left-panel">
+            <h2>Attendance</h2>
+            <div class="input-group">
+                <input type="number" id="fromRoll" placeholder="From Roll No">
+                <input type="number" id="toRoll" placeholder="To Roll No">
+            </div>
+            <div id="studentBox" class="student-box">No Student</div>
+            <div class="btn-group">
+                <button class="present-btn" onclick="markPresent()">Present (Enter)</button>
+                <button class="absent-btn" onclick="markAbsent()">Absent (→)</button>
+            </div>
+            <div id="completionInstruction"></div>
+        </div>
+
+        <!-- Right Panel -->
+        <div class="right-panel">
+            <h2>Absent Students</h2>
+            <div class="absent-list" id="absentList">
+                <h3>None</h3>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let students = [];
+        let currentIndex = 0;
+        let absentStudents = [];
+        let timer = null;
+
+        function startAttendance() {
+            const from = parseInt(document.getElementById("fromRoll").value);
+            const to = parseInt(document.getElementById("toRoll").value);
+            if (isNaN(from) || isNaN(to) || from > to) {
+                alert("Please enter a valid roll number range!");
+                return;
+            }
+            students = [];
+            for (let i = from; i <= to; i++) {
+                students.push({ roll: i, status: null });
+            }
+            currentIndex = 0;
+            absentStudents = [];
+            updateAbsentList();
+            showStudent();
+
+            document.getElementById("fromRoll").blur();
+            document.getElementById("toRoll").blur();
+        }
+
+        function showStudent() {
+            clearTimeout(timer);
+            if (currentIndex < students.length) {
+                const student = students[currentIndex];
+                const box = document.getElementById("studentBox");
+                box.textContent = "Roll " + student.roll;
+                box.className = "student-box";
+                timer = setTimeout(() => {
+                    markAbsent();
+                }, 2000);
+            } else {
+                const presentCount = students.filter(s => s.status === "Present").length;
+                const absentCount = students.filter(s => s.status === "Absent").length;
+                const box = document.getElementById("studentBox");
+                box.innerHTML = `
+                  ✅ Attendance Complete!<br/>
+                  <span class="green-text">Present: ${presentCount}</span><br/>
+                  <span class="red-text">Absent: ${absentCount}</span>
+                `;
+                box.className = "student-box";
+
+                // Show separate instruction
+                document.getElementById("completionInstruction").innerHTML =
+                    "📌 Instruction: Please save the attendance record or close the session.";
+            }
+        }
+
+        function markPresent() {
+            clearTimeout(timer);
+            if (currentIndex < students.length) {
+                const box = document.getElementById("studentBox");
+                box.className = "student-box present";
+                students[currentIndex].status = "Present";
+                currentIndex++;
+                setTimeout(showStudent, 500);
+            }
+        }
+
+        function markAbsent() {
+            clearTimeout(timer);
+            if (currentIndex < students.length) {
+                const box = document.getElementById("studentBox");
+                box.className = "student-box absent";
+                students[currentIndex].status = "Absent";
+                absentStudents.push(students[currentIndex].roll);
+                updateAbsentList();
+                currentIndex++;
+                setTimeout(showStudent, 500);
+            }
+        }
+
+        function updateAbsentList() {
+            const list = document.getElementById("absentList");
+            list.innerHTML = "";
+            if (absentStudents.length === 0) {
+                list.innerHTML = "<h3>None</h3>";
+            } else {
+                absentStudents.forEach(roll => {
+                    const item = document.createElement("div");
+                    item.className = "absent-item";
+                    item.textContent = "Roll " + roll;
+                    list.appendChild(item);
+                });
+                list.scrollTo({
+                    top: list.scrollHeight,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+        document.getElementById("fromRoll").addEventListener("keydown", e => {
+            if (e.key === "Enter") {
+                document.getElementById("toRoll").focus();
+            }
+        });
+        document.getElementById("toRoll").addEventListener("keydown", e => {
+            if (e.key === "Enter") {
+                startAttendance();
+            }
+        });
+
+        document.addEventListener("keydown", e => {
+            if (e.key === "Enter" && document.activeElement.id !== "fromRoll" && document.activeElement.id !== "toRoll") {
+                markPresent();
+            } else if (e.key === "ArrowRight") {
+                markAbsent();
+            }
+        });
+    </script>
+</body>
+
+</html>

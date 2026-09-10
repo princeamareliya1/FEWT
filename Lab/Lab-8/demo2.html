@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            height: 200px;
+            width: 200px;
+            border: 2px solid black;
+            background-color: aqua;
+            font-size: medium;
+        }
+    </style>
+</head>
+<body>
+    <div class="box" id="box">
+        Perform Mouse Event
+    </div>
+    <script>
+        document.getElementById("box").addEventListener("click",function(){
+            document.getElementById("box").innerHTML="Click";
+        })
+        document.getElementById("box").addEventListener("dblclick",function(){
+            document.getElementById("box").innerHTML="dblclick";
+        })
+        document.getElementById("box").addEventListener("mouseover",function(){
+            document.getElementById("box").innerHTML="mouseover";
+        })
+        document.getElementById("box").addEventListener("mousemove",function(){
+            document.getElementById("box").innerHTML="mousemove";
+        })
+        document.getElementById("box").addEventListener("mousedown",function(){
+            document.getElementById("box").innerHTML="mousedowm";
+        }) 
+         document.getElementById("box").addEventListener("mouseleave",function(){
+            document.getElementById("box").innerHTML="mouseleave";
+        }) 
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h2>Press key</h2>
+    <p id="output"></p>
+    <script>
+        function showevent(eventtype,event){
+            document.getElementById("output").innerHTML = 
+            "Event: " + eventtype + "<br>" + 
+            "Key: " + event.key + "<br>" +
+            "Code: " + event.code;
+        }
+        document.addEventListener("keydown",function(event){
+            showEvent("keydown",event);
+        });
+        document.addEventListener("keypress",function(event){
+            showEvent("keypress",event);
+        });
+        document.addEventListener("keyup",function(event){
+            showEvent("keyup",event);
+        });
+    </script>
+</body>
+</html>

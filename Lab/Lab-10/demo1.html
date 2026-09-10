@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Table</title>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 5px;
+    }
+  </style>
+</head>
+<body>
+  <label for="sname">Name</label>
+  <input type="text" name="sname" id="sname">
+  <button type="button" onclick="createstudent()">Add</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody id="tablebody"></tbody>
+  </table>
+  <script>
+    let arr = [];
+    function display() {
+      let tablebody = document.getElementById('tablebody');
+      tablebody.innerHTML = "";
+      for (let i = 0; i < arr.length; i++) {
+        tablebody.innerHTML += `
+          <tr>
+            <td>${i + 1}</td>
+            <td>${arr[i]}</td>
+            <td>
+              <button onclick="deletestudent(${i})">Delete</button>
+              <button onclick="updatestudent(${i})">Edit</button>
+            </td>
+          </tr>
+        `;
+      }
+    }
+    function createstudent(){
+      let sname = document.getElementById("sname").value;
+      if (sname.trim()!="") {
+        arr.push(sname);
+        display();
+        document.getElementById("sname").value ="";
+      } 
+      else {
+        alert("Please enter a name:");
+      }
+    }
+    function deletestudent(index){
+      arr.splice(index, 1);
+      display();
+    }
+    function updatestudent(index){
+      let newName = prompt("Enter new name:", arr[index]);
+      if (newName.trim()!=""){
+        arr[index] = newName;
+        display();
+      }
+    }
+  </script>
+</body>
+</html>
