@@ -3,7 +3,7 @@ import "./FacultyList.css"
 
 function FacultyList() {
     const [facultyList, setFaculty] = useState([]);
-    const api_URL = "https://6aaa1cb0ff4dd5698b4e082e.mockapi.io/faculty/Faculty";
+    const api_URL = "https://6aaa88edff4dd5698b4ea745.mockapi.io/Faculty";
     useEffect(() => {
         fetch(api_URL).then((res) => res.json()).then((res) => setFaculty(res));
     }, []);

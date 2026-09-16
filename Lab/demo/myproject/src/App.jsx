@@ -22,7 +22,10 @@
 
 // import AppContent from './React_lab19/AppContent'
 
-import CalcEval from "./React_lab22/CalcEval";
+// import CalcEval from "./React_lab22/CalcEval";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import FacultyList from "./React_lab24/FacultyList"
 
 function App() {
   // const [name,setName] = useState("")
@@ -54,6 +57,12 @@ function App() {
       {/* <AppContent/> */}
 
       {/* <CalcEval/> */}
+
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<FacultyList/>}/>
+        </Routes>
+      </BrowserRouter>
 
     </>
   );
