@@ -53,7 +53,7 @@ function App() {
 
       {/* <AppContent/> */}
 
-        <CalcEval/>
+      {/* <CalcEval/> */}
 
     </>
   );
