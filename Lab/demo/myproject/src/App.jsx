@@ -24,8 +24,21 @@
 
 // import CalcEval from "./React_lab22/CalcEval";
 
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import FacultyList from "./React_lab24/FacultyList"
+// import Crud from "./React_lab23/Crud";
+
+// import { BrowserRouter, Routes ,Route } from "react-router-dom";
+// import FacultyList from "./React_lab24/FacultyList";
+
+import { UserProvider } from "./React_lab25/UserContext";
+import useUser from "./React_lab25/useUser";
+import Home from "./React_lab25/Home";
+import Login from "./React_lab25/Login";
+
+function AppContent() {
+  const { user } = useUser();
+
+  return user ? <Home /> : <Login />
+}
 
 function App() {
   // const [name,setName] = useState("")
@@ -58,11 +71,17 @@ function App() {
 
       {/* <CalcEval/> */}
 
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<FacultyList/>}/>
-        </Routes>
-      </BrowserRouter>
+      {/* <Crud /> */}
+
+      {/* <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<FacultyList/>}/>
+          </Routes>
+        </BrowserRouter> */}
+
+      <UserProvider>
+        <AppContent />
+      </UserProvider>
 
     </>
   );
