@@ -3,19 +3,19 @@ import {useState,useEffect} from 'react';
 function Hospital(){
     const apiURL = "https://api.com/hospitals";
     const [data,setData] = useState([]);
-    
+
     useEffect(()=>{
         fetch(apiURL)
         .then(res=>res.json)
         .then(res=>setData(res))
-    },[]);
+    });
 
     function deleteHospital(id){
         fetch(apiURL+"/"+id,{method:"DELETE"})
-        .then(()=>setData(data.filter(h=>h.HospitalId!=id)))
+        .then(()=>setData(data.filter(h=>h.HospitalId!==id)))
     }
 
-    function inseertHospital(newHospital){
+    function insertHospital(newHospital){
         fetch(apiURL,{
             method:"POST",
             headers:{"Content-Type":"application/json"},
@@ -26,7 +26,7 @@ function Hospital(){
     return(
         <table>
             <tr>
-                <th>HospitalID</th>
+                <th>HospitalId</th>
                 <th>HospitalName</th>
                 <th>HospitalMobile</th>
                 <th>HospitalAddress</th>
@@ -46,7 +46,7 @@ function Hospital(){
                         </button>
                     </td>
                 </tr>
-            ))};
+            ))}
         </table>
     )
 }
