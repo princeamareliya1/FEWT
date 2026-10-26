@@ -18,8 +18,8 @@ function Hospital() {
     function insertHospital(newHospital) {
         fetch(apiURL, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newHospital)
+            body: JSON.stringify(newHospital),
+            headers: { "Content-Type": "application/json" }
         });
     }
 }
